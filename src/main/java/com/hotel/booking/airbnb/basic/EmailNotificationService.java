@@ -1,6 +1,5 @@
-package com.hotel.booking.airbnb.impl;
+package com.hotel.booking.airbnb.basic;
 
-import com.hotel.booking.airbnb.INotificationService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;

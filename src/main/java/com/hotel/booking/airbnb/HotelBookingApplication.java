@@ -1,9 +1,6 @@
 package com.hotel.booking.airbnb;
 
-import com.hotel.booking.airbnb.impl.EmailNotificationService;
-import com.hotel.booking.airbnb.impl.SmsNotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.hotel.booking.airbnb.basic.INotificationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.hotel.booking.airbnb;
+package com.hotel.booking.airbnb.basic;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,3 +11,4 @@ public class AppConfig {
         return new PaymentServiceWithBean();
     }
 }
+

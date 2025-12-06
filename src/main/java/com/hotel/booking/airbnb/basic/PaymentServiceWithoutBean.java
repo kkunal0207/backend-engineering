@@ -1,4 +1,4 @@
-package com.hotel.booking.airbnb;
+package com.hotel.booking.airbnb.basic;
 
 public class PaymentServiceWithoutBean {
 
