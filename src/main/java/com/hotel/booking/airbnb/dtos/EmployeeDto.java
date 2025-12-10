@@ -11,7 +11,7 @@ public class EmployeeDto {
     LocalDate doj;
     boolean isActive;
 
-    public EmployeeDto(){
+    public EmployeeDto() {
 
     }
 
