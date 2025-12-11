@@ -1,5 +1,7 @@
 package com.hotel.booking.airbnb.entities;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +23,14 @@ public class EmployeeEntity {
     private Long employeeId;
 
     private String name;
+
+    @JsonProperty("emailId")
+    @JsonAlias({"email", "emailId"})
     private String emailId;
     private int age;
     private LocalDate doj;
-    private boolean isActive;
+
+    @JsonProperty("isActive")
+    @JsonAlias({"isActive", "active"})
+    private boolean active;
 }
