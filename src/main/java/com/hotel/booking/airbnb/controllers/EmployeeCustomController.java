@@ -3,9 +3,12 @@ package com.hotel.booking.airbnb.controllers;
 
 import com.hotel.booking.airbnb.dtos.EmployeeDto;
 import com.hotel.booking.airbnb.services.EmployeeCustomService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/customEmployee")
@@ -18,20 +21,35 @@ public class EmployeeCustomController {
     }
 
     @GetMapping("{id}")
-    public EmployeeDto getEmployeeById(@PathVariable(name="id") Long id){
-        return employeeCustomService.getById(id);
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable(name="id") Long id) throws Exception {
+//        return employeeCustomService.getById(id);
+        Optional<EmployeeDto> employeeDto = employeeCustomService.getById(id);
+
+        return employeeDto
+            .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
+            .orElseThrow(() -> new Exception("Employee not found with id: "+id));
     }
 
     @GetMapping
-    public List<EmployeeDto> getAllEmployee(
+    public ResponseEntity<List<EmployeeDto>> getAllEmployee(
         @RequestParam(required = false, name="inputAge") Integer age,
         @RequestParam(required = false) String name
     ){
-        return employeeCustomService.getAll();
+        return ResponseEntity.ok(employeeCustomService.getAll());
     }
 
     @PostMapping
-    public EmployeeDto saveAnEmployee(@RequestBody EmployeeDto employeeDto){
-        return employeeCustomService.saveAnEmployee(employeeDto);
+    public ResponseEntity<EmployeeDto> saveAnEmployee(@RequestBody @Valid EmployeeDto employeeDto){
+        return ResponseEntity.ok( employeeCustomService.saveAnEmployee(employeeDto));
+    }
+
+    @PutMapping("{employeeId}")
+    public EmployeeDto updateAnEmployee(@RequestBody EmployeeDto employeeDto, @PathVariable Long employeeId){
+        return employeeCustomService.updateEmployee(employeeDto,employeeId);
+    }
+
+    @DeleteMapping("{employeeId}")
+    public void deleteEmployee(@PathVariable Long employeeId){
+        employeeCustomService.deleteById(employeeId);
     }
 }

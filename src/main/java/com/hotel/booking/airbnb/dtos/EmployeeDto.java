@@ -1,74 +1,33 @@
 package com.hotel.booking.airbnb.dtos;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmployeeDto {
 
     Long employeeId;
+
+    @NotNull(message = "Name cannot be null")
     String name;
+
+    @JsonProperty("emailId")
+    @JsonAlias({"email", "emailId"})
     String emailId;
     int age;
     LocalDate doj;
-    boolean isActive;
+    @JsonProperty("isActive")
+    @JsonAlias({"isActive", "active"})
+    boolean active;
 
-    public EmployeeDto() {
-
-    }
-
-    public EmployeeDto(Long employeeId, String name, String emailId, int age, LocalDate doj, boolean isActive) {
-        this.employeeId = employeeId;
-        this.name = name;
-        this.emailId = emailId;
-        this.age = age;
-        this.doj = doj;
-        this.isActive = isActive;
-    }
-
-    public Long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public LocalDate getDoj() {
-        return doj;
-    }
-
-    public void setDoj(LocalDate doj) {
-        this.doj = doj;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }
