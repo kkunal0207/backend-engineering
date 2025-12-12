@@ -33,4 +33,6 @@ public class EmployeeEntity {
     @JsonProperty("isActive")
     @JsonAlias({"isActive", "active"})
     private boolean active;
+
+    private String role;
 }
