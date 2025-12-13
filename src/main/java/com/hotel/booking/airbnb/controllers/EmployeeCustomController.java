@@ -2,6 +2,7 @@ package com.hotel.booking.airbnb.controllers;
 
 
 import com.hotel.booking.airbnb.dtos.EmployeeDto;
+import com.hotel.booking.airbnb.exceptions.ResourceNotFoundException;
 import com.hotel.booking.airbnb.services.EmployeeCustomService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,13 +30,13 @@ public class EmployeeCustomController {
 
         return employeeDto
             .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-            .orElseThrow(() -> new NoSuchElementException("Employee not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
     }
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<String> handleNoSuchEmployeeException(NoSuchElementException noSuchElementException){
-        return new ResponseEntity<>("No Such Employee Found", HttpStatus.NOT_FOUND);
-    }
+//    @ExceptionHandler(NoSuchElementException.class)
+//    public ResponseEntity<String> handleNoSuchEmployeeException(NoSuchElementException noSuchElementException){
+//        return new ResponseEntity<>("No Such Employee Found", HttpStatus.NOT_FOUND);
+//    }
     @GetMapping
     public ResponseEntity<List<EmployeeDto>> getAllEmployee(
         @RequestParam(required = false, name="inputAge") Integer age,
