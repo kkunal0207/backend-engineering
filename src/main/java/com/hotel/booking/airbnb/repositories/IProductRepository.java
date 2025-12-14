@@ -2,6 +2,7 @@ package com.hotel.booking.airbnb.repositories;
 
 
 import com.hotel.booking.airbnb.entities.ProductEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,10 @@ public interface IProductRepository extends JpaRepository<ProductEntity, Long> {
 
     @Query("select e from ProductEntity e where price = ?1 and sku = ?2")
     ProductEntity findByPriceAndSku(BigDecimal price, String sku);
+
+    List<ProductEntity> findByTitleOrderByPrice(String title);
+
+    //Sorting dynamically :: Loose Coupling
+
+    List<ProductEntity> findAll(Sort sortingKey);
 }
