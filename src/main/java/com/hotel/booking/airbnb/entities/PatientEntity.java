@@ -32,7 +32,7 @@ public class PatientEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "patient_insurance")
     private InsuranceEntity insurance;
 
