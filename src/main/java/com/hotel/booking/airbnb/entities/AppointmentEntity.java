@@ -1,10 +1,8 @@
 package com.hotel.booking.airbnb.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.print.Doc;
 import java.time.LocalDateTime;
@@ -14,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AppointmentEntity {
 
     @Id
@@ -27,10 +26,12 @@ public class AppointmentEntity {
     private LocalDateTime appointmentTime;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name = "patient_appointment", nullable = false)
     private PatientEntity patient;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name = "doctor_appointment",nullable = false)
     private DoctorEntity doctor;
 }

@@ -6,6 +6,7 @@ import com.hotel.booking.airbnb.dtos.IPatientInfo;
 import com.hotel.booking.airbnb.entities.PatientEntity;
 import com.hotel.booking.airbnb.entities.type.BloodGroupType;
 import com.hotel.booking.airbnb.repositories.IPatientRepository;
+import com.hotel.booking.airbnb.services.InsuranceService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,9 @@ public class PatientTest {
     @Autowired
     private IPatientRepository patientRepository;
 
+    @Autowired
+    private InsuranceService insuranceService;
+
     @Test
     void findAllPatient() {
         List<PatientEntity> patientsList = patientRepository.findAll();
@@ -28,35 +32,40 @@ public class PatientTest {
     }
 
     @Test
-    void findPatientInfo(){
+    void findPatientInfo() {
         List<IPatientInfo> patientInfo = patientRepository.findByPatientInfo();
 
-        for(IPatientInfo p : patientInfo){
+        for (IPatientInfo p : patientInfo) {
             System.out.println(p);
         }
     }
 
     @Test
-    void findPatientsByConcreteClass(){
+    void findPatientsByConcreteClass() {
         List<CPatientInfo> patientInfo = patientRepository.findByPatiendInfoConcrete();
 
-        for(CPatientInfo p : patientInfo){
+        for (CPatientInfo p : patientInfo) {
             System.out.println(p);
         }
     }
 
     @Test
-    void findPatientsBloodGroupStats(){
+    void findPatientsBloodGroupStats() {
         List<BloodGroupStats> bloodGroupStats = patientRepository.findCountsByBloodGroup();
 
-        for(BloodGroupStats bgs : bloodGroupStats){
+        for (BloodGroupStats bgs : bloodGroupStats) {
             System.out.println(bgs);
         }
     }
 
     @Test
-    void updatePatientName(){
-        int updateName = patientRepository.updatePatientsName("Shivam",1L);
+    void updatePatientName() {
+        int updateName = patientRepository.updatePatientsName("Shivam", 1L);
         System.out.println(updateName);
+    }
+
+    @Test
+    void deletePatientDetails(){
+        insuranceService.deletePatienceInsurance(1L);
     }
 }
