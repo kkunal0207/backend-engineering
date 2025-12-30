@@ -29,4 +29,9 @@ public class InsuranceService {
         insurance.setPatient(patientDetails);
         return insurance;
     }
+
+    public void deletePatienceInsurance(Long patienceId){
+        patientRepository.findById(patienceId).orElseThrow();
+        patientRepository.deleteById(patienceId);
+    }
 }
