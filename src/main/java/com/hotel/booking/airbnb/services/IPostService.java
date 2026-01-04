@@ -11,5 +11,7 @@ public interface IPostService {
 
     PostDto addPost(PostDto inputPost);
 
+    PostDto updatePost(PostDto inputPost, Long postId);
+
 
 }
