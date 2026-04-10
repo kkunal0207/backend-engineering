@@ -1,29 +1,42 @@
 package com.springboot.week2.controller;
 
+import com.springboot.week2.EmployeeRepository;
 import com.springboot.week2.dto.EmployeeDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.springboot.week2.entity.EmployeeEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @RestController
+@RequestMapping("/employee")
 public class EmployeeController {
 
-    @GetMapping("/getsecret")
-    public String getSecrets(){
-        return "secret is: ah6272@^#%";
+    private final EmployeeRepository employeeRepository;
+
+    public  EmployeeController(EmployeeRepository employeeRepository){
+        this.employeeRepository = employeeRepository;
     }
 
-    @GetMapping("/employees/{employeeId}")
-    public EmployeeDto getEmployeeById(@PathVariable Long employeeId){
-        return new EmployeeDto(employeeId, "Kunal","kunal@gmail.com", LocalDate.of(1999,8,21),true);
+//    @GetMapping("getbyid/{id}")
+//    public String getEmployeeById(@PathVariable Integer id){
+//        return "id: "+id;
+//    }
+
+    @GetMapping("{id}")
+    public EmployeeEntity getById(@PathVariable Integer id){
+        return employeeRepository.findById(id).orElseThrow(null);
     }
 
-    @GetMapping("/employees")
-    public String getAge(@RequestParam(required = false) String age,
-                         @RequestParam(required = true) String name){
-        return "age is: "+age + "name is: "+name;
+    @GetMapping("/all")
+    public List<EmployeeEntity> findAllEmployee(){
+        return employeeRepository.findAll();
     }
+
+    @PostMapping
+    public EmployeeEntity createNewEmployee(@RequestBody EmployeeEntity inputEmployee){
+        return employeeRepository.save(inputEmployee);
+
+    }
+
+
 }
