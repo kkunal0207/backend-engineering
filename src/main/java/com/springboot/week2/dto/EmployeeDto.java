@@ -1,41 +1,11 @@
 package com.springboot.week2.dto;
 
-
 import java.time.LocalDate;
 
 public class EmployeeDto {
 
-    private Long id;
-    private String name;
-    private String emailId;
 
-    private EmployeeDto(){
-
-    }
-
-    public EmployeeDto(Long id, String name, String emailId, LocalDate dateOfJoining, Boolean isActive) {
-        this.id = id;
-        this.name = name;
-        this.emailId = emailId;
-        this.dateOfJoining = dateOfJoining;
-        this.isActive = isActive;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private Integer id;
 
     public String getEmailId() {
         return emailId;
@@ -43,14 +13,6 @@ public class EmployeeDto {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
-    }
-
-    public LocalDate getDateOfJoining() {
-        return dateOfJoining;
-    }
-
-    public void setDateOfJoining(LocalDate dateOfJoining) {
-        this.dateOfJoining = dateOfJoining;
     }
 
     public Boolean getActive() {
@@ -61,6 +23,54 @@ public class EmployeeDto {
         isActive = active;
     }
 
+    public LocalDate getDateOfJoining() {
+        return dateOfJoining;
+    }
+
+    public void setDateOfJoining(LocalDate dateOfJoining) {
+        this.dateOfJoining = dateOfJoining;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    private String name;
+    private Integer age;
     private LocalDate dateOfJoining;
     private Boolean isActive;
+    private String emailId;
+
+    public EmployeeDto(String emailId, Boolean isActive, LocalDate dateOfJoining, Integer age, String name, Integer id) {
+        this.emailId = emailId;
+        this.isActive = isActive;
+        this.dateOfJoining = dateOfJoining;
+        this.age = age;
+        this.name = name;
+        this.id = id;
+    }
+
+    public EmployeeDto(){
+
+    }
 }

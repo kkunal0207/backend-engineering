@@ -1,29 +1,84 @@
 package com.springboot.week2.controller;
 
+import com.springboot.week2.EmployeeRepository;
 import com.springboot.week2.dto.EmployeeDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.springboot.week2.entity.EmployeeEntity;
+import com.springboot.week2.service.EmployeeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/employee")
 public class EmployeeController {
 
-    @GetMapping("/getsecret")
-    public String getSecrets(){
-        return "secret is: ah6272@^#%";
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService){
+        this.employeeService = employeeService;
     }
 
-    @GetMapping("/employees/{employeeId}")
-    public EmployeeDto getEmployeeById(@PathVariable Long employeeId){
-        return new EmployeeDto(employeeId, "Kunal","kunal@gmail.com", LocalDate.of(1999,8,21),true);
+//    private final EmployeeRepository employeeRepository;
+//
+//    public  EmployeeController(EmployeeRepository employeeRepository){
+//        this.employeeRepository = employeeRepository;
+//    }
+
+//    @GetMapping("getbyid/{id}")
+//    public String getEmployeeById(@PathVariable Integer id){
+//        return "id: "+id;
+//    }
+
+//    @GetMapping("{id}")
+//    public EmployeeEntity getById(@PathVariable Integer id){
+//        return employeeRepository.findById(id).orElseThrow(null);
+//    }
+//
+//    @GetMapping("/all")
+//    public List<EmployeeEntity> findAllEmployee(){
+//        return employeeRepository.findAll();
+//    }
+//
+//    @PostMapping
+//    public EmployeeEntity createNewEmployee(@RequestBody EmployeeEntity inputEmployee){
+//        return employeeRepository.save(inputEmployee);
+//    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<EmployeeDto> getById(@PathVariable Integer id){
+        Optional<EmployeeDto> dto = employeeService.findById(id);
+        if(dto.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(dto.get());
     }
 
-    @GetMapping("/employees")
-    public String getAge(@RequestParam(required = false) String age,
-                         @RequestParam(required = true) String name){
-        return "age is: "+age + "name is: "+name;
+    @GetMapping("/all")
+    public ResponseEntity<List<EmployeeDto>> findAllEmployee(){
+        return ResponseEntity.ok(employeeService.findAll());
     }
+
+    @PostMapping
+    public ResponseEntity<EmployeeDto> createNewEmployee(@RequestBody EmployeeDto inputEmployee){
+        return new ResponseEntity<>(employeeService.saveAnEmployee(inputEmployee), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{employeeId}")
+    public ResponseEntity<EmployeeDto> updateAnEmployee(@RequestBody EmployeeDto inputEmployee,
+                                        @PathVariable Integer employeeId){
+        return new ResponseEntity<>(employeeService.updateAnEmployee(inputEmployee,employeeId),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{employeeId}")
+    public void deleteAnEmployeeById(@PathVariable Integer employeeId){
+        employeeService.deleteAnEmployeeById(employeeId);
+    }
+
+    @PatchMapping("/{employeeId}")
+    public EmployeeDto partiallyUpdateAnEmployee(@PathVariable Integer employeeId, @RequestBody Map<String, Object> updates){
+        return employeeService.partaillyUpdateAnEmployee(employeeId, updates);
+    }
+
 }
