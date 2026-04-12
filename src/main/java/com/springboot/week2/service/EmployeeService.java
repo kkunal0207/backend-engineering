@@ -6,8 +6,12 @@ import com.springboot.week2.dto.EmployeeDto;
 import com.springboot.week2.entity.EmployeeEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -21,9 +25,9 @@ public class EmployeeService {
         this.mapper = mapper;
     }
 
-    public EmployeeDto findById(Integer id) {
-//        ModelMapper mapper = new ModelMapper();
-        return mapper.map(employeeRepository.findById(id),EmployeeDto.class);
+    public Optional<EmployeeDto> findById(Integer id) {
+        return employeeRepository.findById(id).map(employeeEntity -> mapper.map(employeeEntity,EmployeeDto.class));
+
     }
 
     public List<EmployeeDto> findAll(){
@@ -35,5 +39,28 @@ public class EmployeeService {
     public EmployeeDto saveAnEmployee(EmployeeDto inputEmployee){
 
         return mapper.map(employeeRepository.save(mapper.map(inputEmployee,EmployeeEntity.class)), EmployeeDto.class);
+    }
+
+    public EmployeeDto updateAnEmployee(EmployeeDto inputEmployee, Integer employeeId){
+        EmployeeEntity entity = mapper.map(inputEmployee,EmployeeEntity.class);
+        entity.setId(employeeId);
+        return mapper.map(employeeRepository.save(entity),EmployeeDto.class);
+
+    }
+
+    public void deleteAnEmployeeById(Integer employeeId) {
+        employeeRepository.deleteById(employeeId);
+    }
+
+    public EmployeeDto partaillyUpdateAnEmployee(Integer employeeId, Map<String, Object> updates) {
+        EmployeeEntity entity = employeeRepository.findById(employeeId).orElseThrow(null);
+        updates.forEach((key,value) ->{
+            Field field = ReflectionUtils.findField(EmployeeEntity.class,key);
+            field.setAccessible(true);
+            ReflectionUtils.setField(field,entity,value);
+        });
+
+        return mapper.map(employeeRepository.save(entity),EmployeeDto.class);
+
     }
 }
