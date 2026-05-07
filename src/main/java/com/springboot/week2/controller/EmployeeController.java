@@ -3,6 +3,7 @@ package com.springboot.week2.controller;
 import com.springboot.week2.EmployeeRepository;
 import com.springboot.week2.dto.EmployeeDto;
 import com.springboot.week2.entity.EmployeeEntity;
+import com.springboot.week2.exceptions.ResourceNotFoundException;
 import com.springboot.week2.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -52,8 +54,9 @@ public class EmployeeController {
     @GetMapping("{id}")
     public ResponseEntity<EmployeeDto> getById(@PathVariable Integer id){
         Optional<EmployeeDto> dto = employeeService.findById(id);
-        if(dto.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(dto.get());
+//        if(dto.isEmpty()) return ResponseEntity.notFound().build();
+//        return ResponseEntity.ok(dto.get());
+        return dto.map(employeeDto -> ResponseEntity.ok(employeeDto)).orElseThrow(() -> new ResourceNotFoundException("No such Element Found"));
     }
 
     @GetMapping("/all")
@@ -67,7 +70,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<EmployeeDto> updateAnEmployee(@RequestBody EmployeeDto inputEmployee,
+    public ResponseEntity<EmployeeDto> updateAnEmployee(@RequestBody @Valid EmployeeDto inputEmployee,
                                         @PathVariable Integer employeeId){
         return new ResponseEntity<>(employeeService.updateAnEmployee(inputEmployee,employeeId),HttpStatus.OK);
     }
@@ -81,5 +84,10 @@ public class EmployeeController {
     public EmployeeDto partiallyUpdateAnEmployee(@PathVariable Integer employeeId, @RequestBody Map<String, Object> updates){
         return employeeService.partaillyUpdateAnEmployee(employeeId, updates);
     }
+
+//    @ExceptionHandler(NoSuchElementException.class)
+//    public ResponseEntity<String> nosuchElementExceptionHandler(NoSuchElementException noSuchElementException){
+//        return new ResponseEntity<>("No Such Element Found", HttpStatus.NOT_FOUND);
+//    }
 
 }

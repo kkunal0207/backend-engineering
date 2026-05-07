@@ -4,7 +4,9 @@ import com.springboot.week2.EmployeeRepository;
 import com.springboot.week2.configs.MapperConfig;
 import com.springboot.week2.dto.EmployeeDto;
 import com.springboot.week2.entity.EmployeeEntity;
+import com.springboot.week2.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -42,10 +44,16 @@ public class EmployeeService {
     }
 
     public EmployeeDto updateAnEmployee(EmployeeDto inputEmployee, Integer employeeId){
+        Boolean exists = isEmployeeExistsByEmployeeId(employeeId);
+        if(!exists) throw new ResourceNotFoundException("Employee Not Found By Id: "+employeeId);
         EmployeeEntity entity = mapper.map(inputEmployee,EmployeeEntity.class);
         entity.setId(employeeId);
         return mapper.map(employeeRepository.save(entity),EmployeeDto.class);
 
+    }
+
+    public Boolean isEmployeeExistsByEmployeeId(Integer employeeId){
+        return employeeRepository.existsById(employeeId);
     }
 
     public void deleteAnEmployeeById(Integer employeeId) {
